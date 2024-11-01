@@ -10,7 +10,7 @@ from langfuse.openai import OpenAI
 
 # wczytujemy zmienne srodowiskowe
 load_dotenv()
-openai_client = OpenAI(api_key=os.environ['OPEN_API_KEY'])
+openai_client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
 #dodanie przeliczników cenowych, 1 token = 1 sylaba
 model_pricings = {
