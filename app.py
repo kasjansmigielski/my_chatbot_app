@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 #from openai import OpenAI
-from dotenv import load_dotenv
+from dotenv import load_dotenv, dotenv_values
 import json
 from pathlib import Path
 
@@ -9,8 +9,23 @@ from langfuse.decorators import observe
 from langfuse.openai import OpenAI
 
 # wczytujemy zmienne srodowiskowe
+env = dotenv_values('.env')
 load_dotenv()
-openai_client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+
+# ochrona klucza OpenAI API
+if not st.session_state.get("openai_api_key"):
+    if "OPENAI_API_KEY" in env:
+        st.session_state["openai_api_key"] = env['OPENAI_API_KEY']
+    else:
+        st.info("Dodaj swój klucz API OpenAI aby móc korzystać z tej aplikacji")
+        st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
+        if st.session_state["openai_api_key"]:
+            st.rerun()
+
+if not st.session_state.get("openai_api_key"):
+    st.stop()
+
+openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
 
 #dodanie przeliczników cenowych, 1 token = 1 sylaba
 model_pricings = {
