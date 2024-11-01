@@ -272,7 +272,7 @@ def list_conversations():
 load_current_conversation()
 
 #tytuł aplikacji
-st.title(':classical_building: Nasz GPT')
+st.title(':classical_building: My Chatbot')
 
 #zapamiętywanie starych wiadomości z czatu
 for message in st.session_state['messages']:
